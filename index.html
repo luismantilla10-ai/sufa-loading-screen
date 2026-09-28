@@ -20,9 +20,8 @@
   .phone-wrap { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .screen {
     position:relative; flex:none;
-    width:360px; height:800px;
-    scale:var(--fit,1);
-    transform-origin:center center;
+    --f:1; --u:calc(var(--f) * 1px);
+    width:calc(360 * var(--u)); height:calc(800 * var(--u));
   }
   .stage { position:absolute; inset:0; }
 
@@ -56,15 +55,15 @@
   .orbit { position:absolute; left:0; top:0; width:0; height:0; z-index:1; }
   .av {
     position:absolute; left:0; top:0;
-    width:78px; height:78px; margin:-39px 0 0 -39px;
-    translate:var(--cx) var(--cy);
+    width:calc(78 * var(--u)); height:calc(78 * var(--u)); margin:calc(-39 * var(--u)) 0 0 calc(-39 * var(--u));
+    translate:calc(var(--cx) * var(--u)) calc(var(--cy) * var(--u));
   }
   .avc { width:100%; height:100%; }
   .sphere {
     position:relative; width:100%; height:100%;
     border-radius:50%; overflow:hidden;
     opacity:0; scale:0.5;
-    box-shadow:inset 0 0 0 2px #fff;
+    box-shadow:inset 0 0 0 calc(2.2 * var(--u)) #fff;
   }
   .sphere canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
   .s-adulto { background:radial-gradient(circle closest-side at 50% 50%, #8FB3F5 0%, #4479F0 100%); }
@@ -72,7 +71,7 @@
   .s-abuelo { background:radial-gradient(circle closest-side at 50% 50%, #D5F8FF 0%, #127FAD 100%); }
   .s-abuela { background:radial-gradient(circle closest-side at 50% 50%, #FFE8C9 0%, #F0A540 100%); }
   .s-nina   { background:radial-gradient(circle closest-side at 50% 50%, #FFE6D6 0%, #9441C1 100%); }
-  .s-nino   { background:url(data:image/png;base64,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) center/100% 100% no-repeat; box-shadow:none; }
+  .s-nino   { background:radial-gradient(circle closest-side at 50% 50%, #E3FE35 0%, #CEE729 24%, #B7CF1C 48%, #A1B710 73%, #8FA406 91%, #8FA406 100%); }
 
   /* 1) all six pop in together, clustered around the button (subtle bounce) */
   @keyframes popIn {
@@ -85,8 +84,8 @@
 
   /* 2) they separate to the ring positions... */
   @keyframes avSpread {
-    from { translate:var(--cx) var(--cy); }
-    to   { translate:var(--sx) var(--sy); }
+    from { translate:calc(var(--cx) * var(--u)) calc(var(--cy) * var(--u)); }
+    to   { translate:calc(var(--sx) * var(--u)) calc(var(--sy) * var(--u)); }
   }
   .av.spread { animation:avSpread 0.9s cubic-bezier(.25,1.12,.4,1) forwards; }
 
@@ -98,12 +97,14 @@
 
   /* ---------- Green + button and its pulse ---------- */
   .btn {
-    position:absolute; left:-35.4px; top:-37.5px; width:75px; height:75px;
+    position:absolute; left:calc(-35.4 * var(--u)); top:calc(-37.5 * var(--u)); width:calc(75 * var(--u)); height:calc(75 * var(--u));
     z-index:10; opacity:0; scale:0.5; transform-origin:47.2% 50%;
   }
   .btn.show { animation:popIn 0.5s ease forwards; }
-  .btnp { width:100%; height:100%; transform-origin:47.2% 50%; }
-  .btnp svg { width:100%; height:100%; display:block; overflow:visible; }
+  .btnp { position:relative; width:100%; height:100%; transform-origin:47.2% 50%; }
+  .btn-glow { position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(circle closest-side, rgba(50,171,111,0.40) 0%, rgba(50,171,111,0.40) 55%, rgba(50,171,111,0.20) 66.5%, rgba(50,171,111,0.064) 83%, rgba(50,171,111,0.005) 98%, rgba(50,171,111,0) 100%); }
+  .btnp svg { position:relative; width:100%; height:100%; display:block; overflow:visible; }
   @keyframes btnPress {
     0%   { scale:1; }
     25%  { scale:0.84; }
@@ -118,7 +119,7 @@
   }
   .btn.gone { opacity:1; animation:btnOut 0.4s cubic-bezier(.4,0,.7,1) forwards; }
   .pulse {
-    position:absolute; left:-25px; top:-25px; width:50px; height:50px; border-radius:50%;
+    position:absolute; left:calc(-25 * var(--u)); top:calc(-25 * var(--u)); width:calc(50 * var(--u)); height:calc(50 * var(--u)); border-radius:50%;
     background:radial-gradient(circle closest-side, rgba(52,216,134,0.55) 0%, rgba(52,216,134,0.30) 65%, rgba(52,216,134,0) 100%);
     opacity:0; scale:1; z-index:0; pointer-events:none;
   }
@@ -158,45 +159,35 @@
       <div class="hub" id="hub">
         <div class="pulse" id="pulse"></div>
         <div class="orbit" id="orbit">
-        <div class="av" id="av-adulto" style="--cx:0.0px; --cy:-57.7px; --sx:0.3px; --sy:-108.8px; z-index:1;">
+        <div class="av" id="av-adulto" style="--cx:0.0; --cy:-57.7; --sx:0.3; --sy:-108.8; z-index:1;">
           <div class="avc"><div class="sphere s-adulto" id="sph-adulto"><canvas width="238" height="238"></canvas></div></div>
         </div>
-        <div class="av" id="av-nina" style="--cx:-52.6px; --cy:-23.0px; --sx:-95.1px; --sy:-67.9px; z-index:2;">
+        <div class="av" id="av-nina" style="--cx:-52.6; --cy:-23.0; --sx:-95.1; --sy:-67.9; z-index:2;">
           <div class="avc"><div class="sphere s-nina" id="sph-nina"><canvas width="238" height="238"></canvas></div></div>
         </div>
-        <div class="av" id="av-nino" style="--cx:42.6px; --cy:-25.2px; --sx:94.1px; --sy:-69.6px; z-index:2;">
+        <div class="av" id="av-nino" style="--cx:42.6; --cy:-25.2; --sx:94.1; --sy:-69.6; z-index:2;">
           <div class="avc"><div class="sphere s-nino" id="sph-nino"><canvas width="238" height="238"></canvas></div></div>
         </div>
-        <div class="av" id="av-adulta" style="--cx:54.9px; --cy:37.5px; --sx:98.2px; --sy:44.7px; z-index:3;">
+        <div class="av" id="av-adulta" style="--cx:54.9; --cy:37.5; --sx:98.2; --sy:44.7; z-index:3;">
           <div class="avc"><div class="sphere s-adulta" id="sph-adulta"><canvas width="238" height="238"></canvas></div></div>
         </div>
-        <div class="av" id="av-abuela" style="--cx:-58.2px; --cy:33.0px; --sx:-95.1px; --sy:45.7px; z-index:3;">
+        <div class="av" id="av-abuela" style="--cx:-58.2; --cy:33.0; --sx:-95.1; --sy:45.7; z-index:3;">
           <div class="avc"><div class="sphere s-abuela" id="sph-abuela"><canvas width="238" height="238"></canvas></div></div>
         </div>
-        <div class="av" id="av-abuelo" style="--cx:-3.4px; --cy:59.9px; --sx:0.3px; --sy:108.3px; z-index:4;">
+        <div class="av" id="av-abuelo" style="--cx:-3.4; --cy:59.9; --sx:0.3; --sy:108.3; z-index:4;">
           <div class="avc"><div class="sphere s-abuelo" id="sph-abuelo"><canvas width="238" height="238"></canvas></div></div>
         </div>
         </div>
-        <div class="btn" id="btn"><div class="btnp" id="btnp"><svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_1185_31996)">
+        <div class="btn" id="btn"><div class="btnp" id="btnp"><div class="btn-glow"></div><svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
 <mask id="path-1-inside-1_1185_31996" fill="white">
 <path d="M7.5 27C7.5 17.0589 15.5589 9 25.5 9V9C35.4411 9 43.5 17.0589 43.5 27V27C43.5 36.9411 35.4411 45 25.5 45V45C15.5589 45 7.5 36.9411 7.5 27V27Z"/>
 </mask>
-<path d="M7.5 27C7.5 17.0589 15.5589 9 25.5 9V9C35.4411 9 43.5 17.0589 43.5 27V27C43.5 36.9411 35.4411 45 25.5 45V45C15.5589 45 7.5 36.9411 7.5 27V27Z" fill="url(#paint0_linear_1185_31996)" shape-rendering="crispEdges"/>
+<path d="M7.5 27C7.5 17.0589 15.5589 9 25.5 9V9C35.4411 9 43.5 17.0589 43.5 27V27C43.5 36.9411 35.4411 45 25.5 45V45C15.5589 45 7.5 36.9411 7.5 27V27Z" fill="url(#paint0_linear_1185_31996)"/>
 <path d="M6.45 26.475C6.45 16.2439 14.7439 7.95 24.975 7.95V7.95C35.2061 7.95 43.5 16.2439 43.5 26.475V27C43.5 17.6388 35.4411 10.05 25.5 10.05V10.05C16.1388 10.05 8.55 17.6388 8.55 27L6.45 26.475ZM8.55 27M43.5 45H7.5H43.5M24.975 45C14.7439 45 6.45 36.7061 6.45 26.475V26.475C6.45 16.2439 14.7439 7.95 24.975 7.95L25.5 10.05C16.1388 10.05 8.55 17.6388 8.55 27V27C8.55 36.9411 16.1388 45 25.5 45H24.975ZM25.5 45M43.5 9V45V9" fill="#34D886" mask="url(#path-1-inside-1_1185_31996)"/>
 <path d="M24.4261 33.3281V20.6719H26.5739V33.3281H24.4261ZM19.1719 28.0739V25.9261H31.8281V28.0739H19.1719Z" fill="white"/>
 </g>
 <defs>
-<filter id="filter0_d_1185_31996" x="0" y="0" width="54" height="54" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dx="1.5"/>
-<feGaussianBlur stdDeviation="4.5"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.196848 0 0 0 0 0.672082 0 0 0 0 0.436336 0 0 0 0.4 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1185_31996"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1185_31996" result="shape"/>
-</filter>
 <linearGradient id="paint0_linear_1185_31996" x1="10.6869" y1="13.1596" x2="38.5869" y2="41.0596" gradientUnits="userSpaceOnUse">
 <stop stop-color="#34D886"/>
 <stop offset="0.75" stop-color="#108F50"/>
@@ -215,7 +206,7 @@
   var screen = document.querySelector('.screen');
   function fit() {
     var s = Math.min(wrap.clientWidth / 360, wrap.clientHeight / 800);
-    screen.style.setProperty('--fit', s);
+    screen.style.setProperty('--f', s);
   }
   fit();
   if (window.ResizeObserver) new ResizeObserver(fit).observe(wrap);
@@ -237,7 +228,9 @@
 
     const work = document.createElement('canvas');
     const workCtx = work.getContext('2d', { willReadFrequently: true });
-    const p = { video, canvas, ctx, work, workCtx, running:false, raf:null };
+    const stage = document.createElement('canvas');           // full-res composited frame (offscreen)
+    const stageCtx = stage.getContext('2d');
+    const p = { video, canvas, ctx, work, workCtx, running:false, raf:null, steps:[] };
 
     // redraw only when the video presents a new frame (24fps video vs 60fps display); rAF as fallback
     p.schedule = function schedule() {
@@ -261,8 +254,29 @@
         out.data[i+2] = rgbData.data[i+2];
         out.data[i+3] = alphaData.data[i];
       }
-      if (canvas.width !== halfW || canvas.height !== h) { canvas.width = halfW; canvas.height = h; }
-      ctx.putImageData(out, 0, 0);
+      if (stage.width !== halfW || stage.height !== h) { stage.width = halfW; stage.height = h; }
+      stageCtx.putImageData(out, 0, 0);
+
+      // draw at the real on-screen size (css px x devicePixelRatio) with high-quality smoothing,
+      // stepping down by halves so faces/edges stay smooth instead of aliasing when shrunk
+      const dpr = window.devicePixelRatio || 1;
+      const dw = Math.max(48, Math.min(halfW, Math.round((canvas.parentElement.offsetWidth || halfW) * dpr)));
+      const dh = Math.max(1, Math.round(dw * h / halfW));
+      if (canvas.width !== dw || canvas.height !== dh) { canvas.width = dw; canvas.height = dh; }
+      let src = stage, sw = halfW, sh = h, k = 0;
+      while (sw / 2 >= dw) {
+        const nw = Math.floor(sw / 2), nh = Math.floor(sh / 2);
+        const t = p.steps[k] || (p.steps[k] = document.createElement('canvas'));
+        if (t.width !== nw || t.height !== nh) { t.width = nw; t.height = nh; }
+        const tc = t.getContext('2d');
+        tc.imageSmoothingEnabled = true; tc.imageSmoothingQuality = 'high';
+        tc.clearRect(0, 0, nw, nh);
+        tc.drawImage(src, 0, 0, sw, sh, 0, 0, nw, nh);
+        src = t; sw = nw; sh = nh; k++;
+      }
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.clearRect(0, 0, dw, dh);
+      ctx.drawImage(src, 0, 0, sw, sh, 0, 0, dw, dh);
       p.schedule();
     };
     p.start = function start() {
