@@ -8,23 +8,23 @@
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html, body {
     width:100%; height:100%;
-    background:#e9e9ee;
-    display:flex; align-items:center; justify-content:center;
+    margin:0;
     font-family:-apple-system,'SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     overflow:hidden;
+    overscroll-behavior:none;
   }
-  .phone-wrap { width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:16px; }
+  /* same gradient across the whole viewport: no phone frame, no visible edges */
+  html { background:linear-gradient(180deg,#FFFFFF 0%,#F2F2F7 100%); }
+  body { background:transparent; }
+  /* full-viewport wrapper; the 360x800 scene is scaled (never stretched) to fit any screen */
+  .phone-wrap { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .screen {
-    position:relative;
-    width:360px;
-    aspect-ratio:360/800;
-    max-height:94vh;
-    background:linear-gradient(180deg,#FFFFFF 0%,#F2F2F7 100%);
-    border-radius:36px;
-    overflow:hidden;
-    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+    position:relative; flex:none;
+    width:360px; height:800px;
+    scale:var(--fit,1);
+    transform-origin:center center;
   }
-  .stage { position:absolute; inset:0; overflow:hidden; }
+  .stage { position:absolute; inset:0; }
 
   /* ---------- Background rings ---------- */
   .ring {
@@ -400,6 +400,20 @@
   </div>
 </div>
 
+<script>
+(function () {
+  var wrap = document.querySelector('.phone-wrap');
+  var screen = document.querySelector('.screen');
+  function fit() {
+    var s = Math.min(wrap.clientWidth / 360, wrap.clientHeight / 800);
+    screen.style.setProperty('--fit', s);
+  }
+  fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(wrap);
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+})();
+</script>
 <script>
   function setupPlayer(canvas, src) {
     const ctx = canvas.getContext('2d');
