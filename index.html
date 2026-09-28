@@ -90,10 +90,10 @@
   .av.spread { animation:avSpread 0.9s cubic-bezier(.25,1.12,.4,1) forwards; }
 
   /* 3) ...and orbit gently around the button; faces are counter-rotated so they stay upright */
-  @keyframes orbitSpin   { from { rotate:0deg; } to { rotate:60deg; } }
-  @keyframes orbitUnspin { from { rotate:0deg; } to { rotate:-60deg; } }
-  .orbit.spin { animation:orbitSpin 4.35s cubic-bezier(.45,.05,.35,1) forwards; }
-  .orbit.spin .avc { animation:orbitUnspin 4.35s cubic-bezier(.45,.05,.35,1) forwards; }
+  @keyframes orbitSpin   { from { rotate:0deg; } to { rotate:80deg; } }
+  @keyframes orbitUnspin { from { rotate:0deg; } to { rotate:-80deg; } }
+  .orbit.spin { animation:orbitSpin 3.65s cubic-bezier(.25,.1,.3,1) forwards; }
+  .orbit.spin .avc { animation:orbitUnspin 3.65s cubic-bezier(.25,.1,.3,1) forwards; }
 
   /* ---------- Green + button and its pulse ---------- */
   .btn {
@@ -118,15 +118,18 @@
     100% { scale:0; }
   }
   .btn.gone { opacity:1; animation:btnOut 0.4s cubic-bezier(.4,0,.7,1) forwards; }
-  .pulse {
-    position:absolute; left:calc(-25 * var(--u)); top:calc(-25 * var(--u)); width:calc(50 * var(--u)); height:calc(50 * var(--u)); border-radius:50%;
-    background:radial-gradient(circle closest-side, rgba(52,216,134,0.55) 0%, rgba(52,216,134,0.30) 65%, rgba(52,216,134,0) 100%);
+  /* green waves that radiate when the button is pressed (soft ring + faint translucent fill) */
+  .gw {
+    position:absolute; left:calc(-18 * var(--u)); top:calc(-18 * var(--u));
+    width:calc(36 * var(--u)); height:calc(36 * var(--u));
+    border-radius:50%;
+    background:radial-gradient(circle closest-side, rgba(52,216,134,0.10) 0%, rgba(52,216,134,0.14) 58%, rgba(52,216,134,0.55) 90%, rgba(52,216,134,0) 100%);
     opacity:0; scale:1; z-index:0; pointer-events:none;
   }
-  .pulse.go { animation:greenPulse 0.95s cubic-bezier(.2,.6,.3,1) forwards; }
-  @keyframes greenPulse {
-    0%   { opacity:0.6; scale:1; }
-    100% { opacity:0;   scale:3.8; }
+  .gw.go { animation:greenWave 1.1s cubic-bezier(.2,.55,.3,1) forwards; }
+  @keyframes greenWave {
+    0%   { opacity:1; scale:1; }
+    100% { opacity:0;   scale:5.6; }
   }
 
   /* ---------- Exit: subtle bounce, no opacity fade, everyone leaves together (same as v2) ---------- */
@@ -157,7 +160,7 @@
       <div class="ring" id="ring4" style="left:-30.118%; top:13.947%; width:160.236%; height:72.106%; --wdelay:0.45s;"></div>
 
       <div class="hub" id="hub">
-        <div class="pulse" id="pulse"></div>
+        <div class="gw" id="gw1"></div><div class="gw" id="gw2"></div><div class="gw" id="gw3"></div>
         <div class="orbit" id="orbit">
         <div class="av" id="av-adulto" style="--cx:0.0; --cy:-57.7; --sx:0.3; --sy:-108.8; z-index:1;">
           <div class="avc"><div class="sphere s-adulto" id="sph-adulto"><canvas width="238" height="238"></canvas></div></div>
@@ -337,23 +340,25 @@
 
   // Timeline (ms from the start of the entrance) -- total length identical to v2: exit at 6050, gone by 6650
   //   0     green button bounces in
-  //   500   button is pressed + green pulse in the background
-  //   800   the six avatars pop in together, clustered
-  //   840   waves start (unchanged from v2)
-  //   1400  avatars have appeared -> the button disappears (subtle bounce)
-  //   1700  avatars separate and begin a gentle orbit (until 6050)
+  //   500   button is pressed + three green waves radiate (500 / 800 / 1100)
+  //   1500  the six avatars pop in together, clustered (after the waves)
+  //   1540  blue waves start (same relation to the avatars as before)
+  //   2100  avatars have appeared -> the button disappears
+  //   2400  avatars separate and orbit (faster) until 6050
   //   6050  everything bounces out
   function runEntrance() {
     el('btn').classList.add('show');
-    setTimeout(() => { el('btnp').classList.add('press'); el('pulse').classList.add('go'); }, 500);
-    setTimeout(() => NAMES.forEach(n => el('sph-' + n).classList.add('show')), 800);
-    // the avatars have finished appearing -> the button disappears
-    setTimeout(() => { const b = el('btn'); b.classList.remove('show'); b.classList.add('gone'); }, 1400);
-    RING_ORDER.forEach(id => setTimeout(() => el(id).classList.add('show'), 840));
+    setTimeout(() => {
+      el('btnp').classList.add('press');
+      ['gw1', 'gw2', 'gw3'].forEach((id, i) => setTimeout(() => el(id).classList.add('go'), i * 300));
+    }, 500);
+    setTimeout(() => NAMES.forEach(n => el('sph-' + n).classList.add('show')), 1500);
+    RING_ORDER.forEach(id => setTimeout(() => el(id).classList.add('show'), 1540));
+    setTimeout(() => { const b = el('btn'); b.classList.remove('show'); b.classList.add('gone'); }, 2100);
     setTimeout(() => {
       NAMES.forEach(n => el('av-' + n).classList.add('spread'));
       el('orbit').classList.add('spin');
-    }, 1700);
+    }, 2400);
     setTimeout(exitScene, 6050);
   }
 
